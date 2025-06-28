@@ -1,0 +1,35 @@
+# Composer
+vendor/
+composer.lock
+
+# PHP
+composer.phar
+
+# Logs and temporary files
+logs/
+*.log
+tmp/
+temp/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+# IDE specific files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Build artifacts (if any)
+build/
+dist/
+
+# Local configuration files (if any are ever added outside version control)
+# Example: .env, config.local.php
+*.local.php
+.env

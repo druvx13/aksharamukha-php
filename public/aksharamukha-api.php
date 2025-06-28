@@ -1,6 +1,6 @@
 <?PHP
 
-include_once 'config.inc';
+include_once '../src/config/app_config.php';
 
 $url=$config['url']."/apioutput.php";
 

@@ -34,7 +34,7 @@ $newvow=array("ྲྀ","ྲཱྀ","ླྀ","ླཱྀ");
 
 /* Normalization of Unicode Text */
 
-include "./diCrunch/normalize.php";
+include __DIR__ . "/normalize.php";
 
 /* First character of line as full vowel in scripts */
 
