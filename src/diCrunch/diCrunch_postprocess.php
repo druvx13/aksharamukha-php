@@ -51,4 +51,10 @@ function conv_back($char)
     return $char;
 }
 
-$text = preg_replace("@#(.)@ue", "conv_back('\\1')", $text);
+$text = preg_replace_callback(
+    "@#(.)@u",
+    function ($matches) {
+        return conv_back($matches[1]);
+    },
+    $text
+);
