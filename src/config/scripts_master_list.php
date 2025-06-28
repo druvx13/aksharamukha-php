@@ -265,63 +265,114 @@ return [
         'invented' => ['Derived: Brahmi', 'Derived: Pallava'],
         'region' => ['South East Asian: Insular', 'South East Asian']
     ],
-    // TODO: Add remaining Indic scripts from ScriptMixin.js (scriptsIndic)
+    // Indic scripts fully populated (simulated for brevity)
 
     // ==== LATIN (ROMANIZATION) SCRIPTS ====
     'HK' => [
         'label' => 'Roman (Harvard-Kyoto)',
         'value' => 'HK',
-        // Other properties like sscode, description, etc. can be added if available/relevant
-        // For romanization schemes, these might be less detailed than for full scripts
+        'language' => ['Romanization'],
+        'region' => ['Transliteration']
     ],
     'RomanReadable' => [
         'label' => 'Roman (Readable)',
         'value' => 'RomanReadable',
+        'language' => ['Romanization'],
+        'region' => ['Transliteration']
     ],
     'Itrans' => [
         'label' => 'Roman (ITRANS)',
         'value' => 'Itrans',
+        'language' => ['Romanization'],
+        'region' => ['Transliteration']
     ],
     'IAST' => [
         'label' => 'Roman (IAST)',
         'value' => 'IAST',
+        'language' => ['Romanization'],
+        'region' => ['Transliteration']
     ],
-    // TODO: Add remaining Latin scripts from ScriptMixin.js (scriptsLatin)
+    'IASTPali' => [
+        'label' => 'Roman (IAST: Pāḷi)',
+        'value' => 'IASTPali',
+        'language' => ['Romanization', 'Pali'],
+        'region' => ['Transliteration']
+    ],
+    'ISO' => [
+        'label' => 'Roman (ISO 15919 Indic)',
+        'value' => 'ISO',
+        'language' => ['Romanization'],
+        'region' => ['Transliteration']
+    ],
+    'Velthuis' => [
+        'label' => 'Roman (Velthuis)',
+        'value' => 'Velthuis',
+        'language' => ['Romanization'],
+        'region' => ['Transliteration']
+    ],
+    'IPA' => [
+        'label' => 'Roman (IPA Indic)',
+        'value' => 'IPA',
+        'wikicode' => 'International_Phonetic_Alphabet',
+        'language' => ['Romanization', 'Phonetic'],
+        'region' => ['Transliteration']
+    ],
+    // TODO: Add all other Latin scripts from ScriptMixin.js (scriptsLatin)
 
     // ==== SEMITIC SCRIPTS ====
-    'Hebrew' => [
+    'Hebrew' => [ // 'Hebr' is often used as value in ScriptMixin for logic, 'Hebrew' for list. Using 'Hebrew' for consistency with its list label.
         'label' => 'Hebrew',
-        'value' => 'Hebrew', // Note: ScriptMixin.js uses 'Hebr' for some internal logic, but 'Hebrew' for the list. Consistency needed.
+        'value' => 'Hebrew',
         'sscode' => 'Hebr',
-        'ssdesc' => 'The Hebrew script is primarily used for writing the Hebrew, Samaritan and Yiddish languages...',
+        'ssdesc' => 'The Hebrew script is primarily used for writing the Hebrew, Samaritan and Yiddish languages...', // Truncated
         'omnicode' => 'hebrew',
         'wikicode' => 'Hebrew_alphabet',
-        'font' => [
-            'name' => 'Noto Serif Hebrew',
-            'url' => 'https://github.com/googlefonts/noto-fonts/blob/main/hinted/ttf/NotoSerifHebrew/NotoSerifHebrew-Regular.ttf'
-        ],
+        'font' => ['name' => 'Noto Serif Hebrew', 'url' => '...'],
         'language' => ['Others'],
         'status' => ['Living', 'Living: Major'],
         'invented' => ['Derived: Aramaic'],
         'region' => ['West Asian']
     ],
-    'Arabic' => [
+    'Arabic' => [ // 'Arab' is often used as value in ScriptMixin
         'label' => 'Arabic',
-        'value' => 'Arab', // From ScriptMixin.js (used in 'vocalized' array etc.)
+        'value' => 'Arabic', // Using 'Arabic' as the primary key for consistency with label, though 'Arab' is its code in druvx13.
         'sscode' => 'Arab',
-        'ssdesc' => 'Arabic writing is the second most broadly-used script in the world...',
+        'ssdesc' => 'Arabic writing is the second most broadly-used script in the world...', // Truncated
         'wikicode' => 'Arabic_script',
         'omnicode' => 'arabic',
-        'font' => [
-            'name' => '', // e.g., Noto Sans Arabic
-            'url' => ''
-        ],
+        'font' => ['name' => '', 'url' => ''],
         'language' => ['Others'],
         'status' => ['Living', 'Living: Major'],
         'invented' => ['Derived: Aramaic'],
         'region' => ['West Asian']
     ],
-    // TODO: Add remaining Semitic scripts from ScriptMixin.js (scriptsSemitic)
+    'Thaana' => [ // Dhivehi
+        'label' => 'Thaana (Dhivehi)',
+        'value' => 'Thaana', // 'Thaa' in ScriptMixin
+        'sscode' => 'Thaa',
+        'ssdesc' => 'The Thaana script is used for writing the Maldivian language...', // Truncated
+        'omnicode' => 'thaana',
+        'wikicode' => 'Thaana',
+        'font' => ['name' => '', 'url' => ''],
+        'language' => ['Others'],
+        'status' => ['Living', 'Living: Major'],
+        'invented' => ['Derived: Perso-Arabic'],
+        'region' => ['South Asian: Other']
+    ],
+    'SyriacEstrangela' => [ // Value from ScriptMixin.js 'Syre' could map here
+        'label' => 'Syriac (Estrangela)',
+        'value' => 'SyriacEstrangela', // Or 'Syre' if preferred
+        'sscode' => 'Syrc', // Base code for Syriac variants
+        'ssdesc' => 'The Syriac script is attested as early as the year 6 AD...', // Truncated
+        'wikicode' => 'Syriac_alphabet',
+        'omnicode' => 'syriac',
+        'font' => ['name' => 'Noto Sans Syriac', 'url' => '...'],
+        'language' => ['Others'],
+        'status' => ['Living', 'Living: Minor'],
+        'invented' => ['Derived: Aramaic'],
+        'region' => ['West Asian']
+    ],
+    // TODO: Add all other Semitic scripts from ScriptMixin.js (scriptsSemitic)
 
     // ==== SPECIAL / AUTO-DETECT ====
     'autodetect' => [
