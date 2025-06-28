@@ -11,19 +11,15 @@ The gkWiki:diCrunch engine is released under GNU General Public License. This do
 
 A summary of the license is also available online at http://creativecommons.org/licenses/GPL/2.0/. The full GPL text is available online at http://www.gnu.org/copyleft/gpl.html.
 
-Please read the diCrunch_license.txt file for the full texts.
+Please read the src/diCrunch/diCrunch_license.php file for the full texts.
 
  */
 
-include "./diCrunch/diCrunch_config-en.php";
-include "./diCrunch/swap.php";
-include "transliterate.php";
-include "web_transliterater.php";
-include "cook.php";
-
-$text="";
-
-//echo "Source1 is ".$_SESSION['src']."  Target1 is ".$_SESSION['tgt']."<br/>";
+include "../src/config/diCrunch_config-en.php";
+include "../src/diCrunch/swap.php";
+include "../src/transliterate.php";
+include "web_transliterater.php"; // Assuming this file is correctly placed in public/
+include "../src/cook.php";
 
 // Initialize Option Variables
 
@@ -82,32 +78,180 @@ $pref[13] = "";
 $src="";
 $tgt="";
 
-include "./diCrunch/diCrunch_charsets.php";
-include "./diCrunch/diCrunch_preprocess.php";
-if (empty($_SESSION['src'])) {
-
-    //echo "inside loop";
-
-    $_SESSION['src'] = "devanagari";
-}
-if (empty($_SESSION['tgt'])) {
-
-    //echo "inside loop";
-    $_SESSION['tgt'] = "thai";
-}
-
 // Store Form Attributes in Session
 
 if (!empty($_POST['src'])) { $_SESSION['src']=$_POST['src']; $src=$_SESSION['src'];}
 if (!empty($_POST['tgt'])) { $_SESSION['tgt']=$_POST['tgt']; $tgt=$_SESSION['tgt']; }
 
-if (!empty($_SESSION['src'])) { $src=$_SESSION['src'];}
-if (!empty($_SESSION['tgt'])) { $tgt=$_SESSION['tgt']; }
+if (!empty($_SESSION['src'])) { $_SESSION['src']=$_SESSION['src']; $src=$_SESSION['src'];}
+if (!empty($_SESSION['tgt'])) { $_SESSION['tgt']=$_SESSION['tgt']; $tgt=$_SESSION['tgt']; }
+
+/* Get user preferences */
+
+$pref[0] = "devanagari";
+$pref[1] = "thai";
+
+// Set Font Preferences based on Target Script
+
+if (!empty($_SESSION['tgt']))
+
+{
+
+    if ($_SESSION['tgt'] == "egrantha" || $_SESSION['tgt'] == "tamil-grantha") {
+        $textareatgt .= "font-family:e-Grantamil;";
+    }
+
+    if ($_SESSION['tgt'] == "brahmi") {
+        $textareatgt .= "font-family:XenoType Brahmi;";
+    }
+
+    if ($_SESSION['tgt'] == "saurashtra") {
+        $textareatgt .= "font-family:Sourashtra, Code2000;";
+    }
+
+    if ($_SESSION['tgt'] == "urdu") {
+        $textareatgt .= "font-family:Scheherazade Urdu;";
+
+    }
+
+    if ($_SESSION['tgt'] == "khmer") {
+        $textareatgt .= "font-family:DaunPenh;";
+
+    }
+
+    if ($_SESSION['tgt'] == "burmese" && !empty($_POST['oldbur'])) {
+        $textareatgt .= "font-family:Myanmar1;";
+    }
+
+    if ($_SESSION['tgt'] == "burmese" && empty($_POST['oldbur'])) {
+        $textareatgt .= "font-family:Padauk;";
+    }
+
+    if ($_SESSION['tgt'] == "malayalam" && !empty($_POST['mtrad'])) {
+        $textareatgt .= "font-family:e-Malayalam OTC;";
+    }
+
+}
+
+// Set Font preferences for source scripts
+
+if (!empty($_SESSION['src']))
+
+{
+
+    if ($_SESSION['src'] == "egrantha" || $_SESSION['src'] == "tamil-grantha") {
+        $textareasrc .= "font-family:e-Grantamil;";
+    }
+
+    if ($_SESSION['src'] == "brahmi") {
+        $textareasrc .= "font-family:XenoType Brahmi;";
+    }
+
+    if ($_SESSION['src'] == "saurashtra") {
+        $textareasrc .= "font-family:Sourashtra, Code2000;";
+    }
+
+    if ($_SESSION['src'] == "urdu") {
+        $textareasrc .= "font-family:Scheherazade Urdu;";
+
+    }
+
+    if ($_SESSION['src'] == "khmer") {
+        $textareatgt .= "font-family:DaunPenh;";
+
+    }
+
+    if ($_SESSION['src'] == "burmese" && !empty($_POST['oldbur'])) {
+        $textareasrc .= "font-family:Myanmar1;";
+    }
+
+    if ($_SESSION['src'] == "burmese" && empty($_POST['oldbur'])) {
+        $textareasrc .= "font-family:Padauk;";
+    }
+
+    if ($_SESSION['src'] == "malayalam" && !empty($_POST['mtrad'])) {
+        $textareasrc .= "font-family:e-Malayalam OTC;";
+    }
+
+}
+
+/* Input Processing */
+
+if (!empty($_POST['source'])) {
+    $text = $_POST['source'];
+}
+
+/* Or else */
+
+else {
+
+    //if($_SESSION['src'] == "devanagari")
+
+    //{
+
+    //$_POST['source'] = $intro_text;
+    $_POST['source'] = "";
+    $text = "";
+
+    //}
+
+    //else
+
+    //{
+
+    //$_POST['source'] = " ";
+    //$text = " ";
+
+    //}
+
+
+}
+
+//echo "Source1 is ".$_SESSION['src']."  Target1 is ".$_SESSION['tgt'];
+
 
 $op = ""; // Echo output is buffered into this variable
 
-include "./diCrunch/diCrunch_charsets.php";
-include "./diCrunch/diCrunch_preprocess.php";
+include "../src/diCrunch/diCrunch_charsets.php";
+include "../src/diCrunch/diCrunch_preprocess.php";
+
+if (empty($_SESSION['src'])) {
+
+    //echo "inside loop";
+
+    $_SESSION['src'] = $pref[0];
+}
+if (empty($_SESSION['tgt'])) {
+
+    //echo "inside loop";
+    $_SESSION['tgt'] = $pref[1];
+}
+
+if (empty($text)) {
+    $_POST['source'] = "";
+    $text = "";
+}
+
+if (!empty($_FILES['fle']['name']))
+
+{
+    $ext = explode(".", $_FILES['fle']['name']);
+    $ext = array_pop($ext);
+
+    if ($ext=='txt') {
+        $tmp = file_get_contents($_FILES['fle']['tmp_name']);
+        $tmp = str_replace("﻿","",$tmp);
+        $_POST['source'] = $tmp;
+        $text=$tmp;
+    }
+}
+
+/* If form input */
+
+elseif (!empty($_POST['source'])) {
+
+    $text = $_POST['source'];
+}
 
 $tmp=$text;
 
@@ -468,8 +612,6 @@ if($webtrans) // if Website Transliteration
     $text = str_replace("ž","%",$text);
     $text = str_replace($numbf,$numb,$text);
 
-    $text=str_replace("؟src","?src",$text);
-
     echo $text; // Echo Transliterated HTML
 
 } else // if Website Transliteration is not selected
@@ -492,7 +634,7 @@ if($webtrans) // if Website Transliteration
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<link rel="stylesheet" href="diCrunch/diCrunch.css" type="text/css" />
+<link rel="stylesheet" href="css/diCrunch.css" type="text/css" />
 
 <script language="javascript" type="text/javascript">
 
@@ -690,12 +832,6 @@ CWS;
     </div>
 
 <div align=center><h2><b>Aksharamukha </b>&middot;Asian Script Converter &middot;  Aksharamukha</h2></div>
-<div class="options">
-
-Enter Website URL <input size="50" name="website"><input type="submit" name="convert" value="Convert Website" accesskey="c" class="button" onClick='newind();'/>
-
-</div>
-
 
     <div class="options">
 
@@ -946,28 +1082,121 @@ CWS;
 </div>
 </div>
 
+<div class="wrapper">
+<div class="options">
 
+<b><a href="http://www.virtualvinodh.com/aksharamkh/aksharamukha-web.php" target="_parent">Click here to convert entire Website</a><b>
 
+</div>
+</div>
 
+<div class="wrapper">
 
-
-
+<div class="textareabg">
 
 CWS;
 
+        $tmp = str_replace("\'", "'", $tmp); //escaping escape character is source too
+
+        $op .= <<<CWS
+    <textarea id="source" cols="60" rows="10" style="{$textareasrc}" name="source">{$tmp}</textarea>
+    <br />
+    <textarea id="target" cols="60" rows="10" style="{$textareatgt}" name="target">{$text}</textarea>
+CWS;
+
+        $op .= <<<CWS
+    <br />
+
+    <input type="submit" name="convert" value="Convert" accesskey="c" class="button" />
+
+    &nbsp; &middot; &nbsp;
+
+    Font Size :
+        <select name=fsize onChange="changeSize()";>
+
+CWS;
+
+        $FSize = "";
+        $SourcV = "";
+        $TargeV = "";
+
+        if(!empty($_POST['fsize']))
+
+        {
+            $FSize = $_POST['fsize'];
+
+        }
+
+        if(!empty($_POST['sourc']))
+
+        {
+            $SourcV = $_POST['sourc'];
+
+        }
+
+        if(!empty($_POST['targe']))
+
+        {
+            $TargeV = $_POST['targe'];
+
+        }
+
+        for ($count=16;$count<=35;$count++) { $op .= "<option value = {$count}";
+        if ($FSize == $count) {
+            $op .= " selected=\"selected\"";
+
+        }
+
+        $op .="> {$count}</option>\n"; }
+        $op .= <<<CWS
+        </select>
+
+    &nbsp; &middot; &nbsp;
+
+ Source Font: <input name="sourc" size="15" value="{$SourcV}" onchange=changeSrcFont();></input>
+
+ Target Font: <input name="targe" size="15" value="{$TargeV}" onchange=changeTgtFont();></input>
+
+</div>
+
+</div>
+
+CWS;
+
+        if (!empty($fileoutput_sel)) {
+            $fileoutput_display = "block";
+        } else {
+            $fileoutput_display = "none";
+        }
+
         $op .= <<<CWS
 
+<div class="wrapper">
+<div class="options">
+Upload Text File : <input type="file" name="fle" value="Upload" accesskey="c" class="button" /><input type="submit" name="convert" value="Convert File" accesskey="c" class="button" onclick="return txtupld()">
 
+</div>
+
+</div>
 
 <div class="wrapper">
-<div align=leftr><h2><b>For the Source Script Converter pages: Visit : <a href="http://www.virtualvinodh.com/aksharamukha" target="_parent">http://www.virtualvinodh.com/aksharamukha</a></h2></b></div>
+<div align=leftr><h2><b>For help pages: Visit : <a href="http://www.virtualvinodh.com/quickguide" target="_parent">http://www.virtualvinodh.com/quickguide</a></h2></b></div>
 </div>
 <div class="wrapper">
+
 <div class="textareabg">
 <ul>
+<li> A Comparative table of all the Scripts can be found at <a href="http://www.virtualvinodh.com/character-matrix" target="_parent">Character Matrix</a><br/><br/>
+<li> Grantha & Tamil-Grantha needs <a href="http://www.uni-hamburg.de/Wiss/FB/10/IndienS/Kniprath/INDOLIPI/e-Grantamil.zip">e-Grantamil</a> font to be installed. <br/><br/>
+<li>To view Option Tooltip, place the pointer on the Option Label <br/>
+<li><b>Hindi and Sanskrit (in General) are written using Devanagari</b> <br/>
+</br>
 <li> The Transliterated Webpages may not be properly formatted.
+
 <br/>
 </ul>
+<b> Project hosted at Launchpad : <a href="http://www.launchpad.net/aksharamukha" target="_parent">http://www.launchpad.net/aksharamukha</a> </b> </br> <br/>
+Mail Bugs and Suggestions to vinodh [at] virtualvinodh [dot] com <br/> <br/>
 </div>
 
 </div>

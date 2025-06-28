@@ -1,8 +1,9 @@
 <?PHP
+session_start();
 
-include "./diCrunch/diCrunch_config-en.php";
-include "./diCrunch/swap.php";
-include "transliterate.php";
+include "../src/config/diCrunch_config-en.php";
+include "../src/diCrunch/swap.php";
+include "../src/transliterate.php";
 
 $text=$_GET['text'];
 
@@ -151,8 +152,8 @@ $op = ""; // Echo output is buffered into this variable
 
 // do missing case scenarious
 
-require "./diCrunch/diCrunch_charsets.php";
-require "./diCrunch/diCrunch_preprocess.php";
+require "../src/diCrunch/diCrunch_charsets.php";
+require "../src/diCrunch/diCrunch_preprocess.php";
 
 $text = transliterate($text,$_SESSION['src'],$_SESSION['tgt']); // Transliterate the Inputbox Text
 

@@ -11,15 +11,16 @@ The gkWiki:diCrunch engine is released under GNU General Public License. This do
 
 A summary of the license is also available online at http://creativecommons.org/licenses/GPL/2.0/. The full GPL text is available online at http://www.gnu.org/copyleft/gpl.html.
 
-Please read the diCrunch_license.txt file for the full texts.
+Please read the src/diCrunch/diCrunch_license.php file for the full texts.
 
  */
-
-include "./diCrunch/diCrunch_config-en.php";
-include "./diCrunch/swap.php";
-include "transliterate.php";
+session_start();
+include_once "../src/config/app_config.php"; // For $config['url']
+include "../src/config/diCrunch_config-en.php";
+include "../src/diCrunch/swap.php";
+include "../src/transliterate.php";
 include "web_transliterater.php";
-include "cook.php";
+include "../src/cook.php";
 
 // Initialize Option Variables
 
@@ -130,8 +131,8 @@ else {
 
 $op = ""; // Echo output is buffered into this variable
 
-include "./diCrunch/diCrunch_charsets.php";
-include "./diCrunch/diCrunch_preprocess.php";
+include "../src/diCrunch/diCrunch_charsets.php";
+include "../src/diCrunch/diCrunch_preprocess.php";
 
 if (empty($_SESSION['src'])) {
     $_SESSION['src'] = $pref[0];
@@ -436,8 +437,8 @@ if($webtrans) // if Website Transliteration
 function conv($text)
 
 {
-
-    $url="http://www.virtualvinodh.com/aksharamkh/aksharamukha-api.php";
+    global $config; // Make $config available in function scope
+    $url = $config['url'] . "aksharamukha-api.php";
 
     $params=array("src" => "itrans", "tgt" => "{$_SESSION['tgt']}","text" => "{$text}", "natural" => "true", "pchillu" => "2" );
     $url.="?".http_build_query($params);
