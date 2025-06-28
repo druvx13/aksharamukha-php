@@ -40,6 +40,7 @@ Aksharamukha supports a vast number of scripts. Some of the prominent ones inclu
 *   And various Romanization schemes like Harvard-Kyoto, IAST, ISO 15919, ITRANS, Velthuis.
 
 For a complete list, please refer to the source and target script dropdown menus within the application.
+(Note: Script support is currently being expanded by integrating data from alternative Aksharamukha implementations, aiming for broader coverage.)
 
 ## Original Authorship and License
 

@@ -15,7 +15,8 @@ Please read the src/diCrunch/diCrunch_license.php file for the full texts.
 
  */
 
-include "../src/config/diCrunch_config-en.php";
+$master_scripts = include "../src/config/scripts_master_list.php";
+include "../src/config/diCrunch_config-en.php"; // Still needed for $intro_text, $convs (for now, potentially for other things)
 include "../src/diCrunch/swap.php";
 include "../src/transliterate.php";
 include "web_transliterater.php"; // Assuming this file is correctly placed in public/
@@ -838,17 +839,31 @@ CWS;
 
 Source: <select name="src" onChange="changeView();">
 CWS;
-        foreach ($convs as $key => $value) {
-
-            if( $key != "urdu")
-
-            {
-                $op .= "<option value=\"$key\"";
-                if ($_SESSION['src'] == $key || $src == $key) {
-                    $op .= " selected=\"selected\"";
-                }
-                $op .= ">{$value}</option>\n";
+        // Populate Source dropdown from $master_scripts
+        // The 'autodetect' option is specifically handled.
+        // Urdu is excluded based on original logic and druvx13's ScriptMixin.js implications.
+        if (isset($master_scripts['autodetect'])) {
+            $op .= "<option value=\"autodetect\"";
+            if (isset($_SESSION['src']) && $_SESSION['src'] == 'autodetect') {
+                $op .= " selected=\"selected\"";
             }
+            $op .= ">" . htmlspecialchars($master_scripts['autodetect']['label']) . "</option>\n";
+        }
+
+        foreach ($master_scripts as $script_code => $script_details) {
+            if ($script_code == 'autodetect') continue; // Already handled
+
+            $option_value = isset($script_details['value']) ? $script_details['value'] : $script_code;
+            $option_label = isset($script_details['label']) ? htmlspecialchars($script_details['label']) : htmlspecialchars($script_code);
+
+            // Exclude Urdu from source options, consistent with original behavior and druvx13 logic
+            if ($option_value == 'Urdu') continue;
+
+            $op .= "<option value=\"{$option_value}\"";
+            if (isset($_SESSION['src']) && $_SESSION['src'] == $option_value) {
+                $op .= " selected=\"selected\"";
+            }
+            $op .= ">{$option_label}</option>\n";
         }
 
         $op .= <<<CWS
@@ -856,13 +871,21 @@ CWS;
 &nbsp; &nbsp;
 Target: <select name="tgt" onChange="changeView();">
 CWS;
+        // Populate Target dropdown from $master_scripts
+        // Exclude 'autodetect' and 'Urdu' from target options.
+        foreach ($master_scripts as $script_code => $script_details) {
+            if ($script_code == 'autodetect') continue;
 
-        foreach ($convs as $key => $value) {
-            $op .= "<option value=\"$key\"";
-            if ($_SESSION['tgt'] == $key || $tgt == $key) {
+            $option_value = isset($script_details['value']) ? $script_details['value'] : $script_code;
+            $option_label = isset($script_details['label']) ? htmlspecialchars($script_details['label']) : htmlspecialchars($script_code);
+
+            if ($option_value == 'Urdu') continue;
+
+            $op .= "<option value=\"{$option_value}\"";
+            if (isset($_SESSION['tgt']) && $_SESSION['tgt'] == $option_value) {
                 $op .= " selected=\"selected\"";
             }
-            $op .= ">{$value}</option>\n";
+            $op .= ">{$option_label}</option>\n";
         }
 
         $op .= <<<CWS
